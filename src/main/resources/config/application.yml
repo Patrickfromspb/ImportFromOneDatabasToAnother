@@ -1,0 +1,17 @@
+# Appendix A. Common application properties
+# http://docs.spring.io/spring-boot/docs/current/reference/html/common-application-properties.html
+
+spring:
+  jpa:
+    hibernate:
+      ddl-auto: validate
+      use-new-id-generator-mappings: true
+hikari:
+  datasource-class-name: org.postgresql.ds.PGSimpleDataSource
+  jdbc-url: "jdbc:postgresql://localhost:5432/test"
+  username: postgres
+  password: 12
+  maximum-pool-size: 10
+  leak-detection-threshold: 20000
+  connection-timeout: 1000
+
