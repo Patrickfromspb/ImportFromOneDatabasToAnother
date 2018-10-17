@@ -31,7 +31,8 @@ public class Application {
         TimeZone.setDefault(TimeZone.getTimeZone("UTC"));
         ConfigurableApplicationContext context=SpringApplication.run(Application.class, args);
         Job job =context.getBean(Job.class);
-        job.saveToFile();
+       // job.saveToFile();
+      job.readFromFile();
     }
 
 }
