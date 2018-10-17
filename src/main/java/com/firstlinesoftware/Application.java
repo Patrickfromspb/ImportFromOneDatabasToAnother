@@ -37,27 +37,16 @@ import java.util.TimeZone;
 public class Application {
 
     @Autowired
-    EntityManager entityManager;
+    DBJob dbJob;
 
     protected Application() {
-    init();
     }
-    public void init(){
-        Session session=entityManager.unwrap(Session.class);
-        Transaction transaction=session.beginTransaction();
-        transaction.begin();
-        session.save(new User());
-        transaction.commit();
 
-
-
-    }
 
     public static void main(final String[] args) throws Exception {
         TimeZone.setDefault(TimeZone.getTimeZone("UTC"));
         SpringApplication.run(Application.class, args);
-        new Application();
-
+      //  dbJob.init();
     }
 
 }
