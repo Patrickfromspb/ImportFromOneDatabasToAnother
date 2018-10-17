@@ -8,18 +8,28 @@ import org.springframework.context.annotation.ComponentScan;
 import org.springframework.stereotype.Component;
 
 import javax.persistence.EntityManager;
+import javax.transaction.Transactional;
+
 @Component
-@ComponentScan("com.firstlinesoftware.config")
+
 public class DBJob {
     @Autowired
+
     EntityManager entityManager;
+    @Transactional
     public void init(){
-        Session session=entityManager.unwrap(Session.class);
-        Transaction transaction=session.beginTransaction();
+        Transaction transaction=null;
+       try{
+         Session session=entityManager.unwrap(Session.class);
+         transaction=session.beginTransaction();
         transaction.begin();
         session.save(new User());
         transaction.commit();
 
+    } catch (Exception ex) {
+        ex.printStackTrace();
+        transaction.rollback();
+       }
 
 
     }

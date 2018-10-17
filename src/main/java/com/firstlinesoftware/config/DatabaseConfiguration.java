@@ -12,8 +12,6 @@ package com.firstlinesoftware.config;
 
 import com.zaxxer.hikari.HikariConfig;
 import com.zaxxer.hikari.HikariDataSource;
-import liquibase.integration.spring.SpringLiquibase;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -27,7 +25,6 @@ import javax.sql.DataSource;
  * Конфигурация взаимодействия БД.
  */
 @Configuration
-//@EnableJpaRepositories(value = "ru.russianpost.customs.service.repository")
 @EnableJpaAuditing
 @EnableTransactionManagement
 public class DatabaseConfiguration {
@@ -51,15 +48,5 @@ public class DatabaseConfiguration {
         config.setConnectionTimeout(connectionTimeout);
 
         return new HikariDataSource(config);
-    }
-
-    @Bean
-    public SpringLiquibase liquibase(@Qualifier("dataSource") final DataSource dataSource,
-                                     @Value("${liquibase.context}") final String context) {
-        final SpringLiquibase liquibase = new SpringLiquibase();
-        liquibase.setDataSource(dataSource);
-        liquibase.setChangeLog("classpath:config/liquibase/master.xml");
-        liquibase.setContexts(context);
-        return liquibase;
     }
 }

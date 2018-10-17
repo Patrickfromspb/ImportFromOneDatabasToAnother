@@ -10,19 +10,12 @@
 
 package com.firstlinesoftware;
 
-import com.firstlinesoftware.entities.User;
 
-
-import org.hibernate.Session;
-import org.hibernate.Transaction;
-import org.springframework.beans.factory.annotation.Autowired;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.context.annotation.ComponentScan;
+import org.springframework.context.ConfigurableApplicationContext;
 
-
-import javax.persistence.EntityManager;
 
 import java.util.TimeZone;
 
@@ -32,12 +25,10 @@ import java.util.TimeZone;
  * >74.1 Create a deployable war file</a>.
  */
 
-@ComponentScan("com.firstlinesoftware.config")
+
 @SpringBootApplication
 public class Application {
 
-    @Autowired
-    DBJob dbJob;
 
     protected Application() {
     }
@@ -45,8 +36,10 @@ public class Application {
 
     public static void main(final String[] args) throws Exception {
         TimeZone.setDefault(TimeZone.getTimeZone("UTC"));
-        SpringApplication.run(Application.class, args);
-      //  dbJob.init();
+        ConfigurableApplicationContext context=SpringApplication.run(Application.class, args);
+        DBJob dbJob=context.getBeanFactory().getBean(DBJob.class);
+        int i;
+        dbJob.init();
     }
 
 }
