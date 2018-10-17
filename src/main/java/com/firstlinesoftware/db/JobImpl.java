@@ -3,6 +3,7 @@ package com.firstlinesoftware.db;
 import com.firstlinesoftware.entities.User;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import org.hibernate.ScrollableResults;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -44,10 +45,20 @@ public class JobImpl implements Job {
     @Transactional
     public void saveToFile() {
         Session session = entityManager.unwrap(Session.class);
-        List<User> users = jobJPA.findAll();
-        try (Writer writer = new FileWriter("Output.json")) {
+        try (Writer writer = new FileWriter("Output2.json",true)) {
             Gson gson = new GsonBuilder().create();
-            gson.toJson(users, writer);
+            ScrollableResults itemCursor =
+                    session.createQuery("from User").scroll();
+            int count=0;
+            while ( itemCursor.next() ) {
+                User user = (User) itemCursor.get(0);
+                gson.toJson(user, writer);
+                if ( ++count % 100 == 0 ) {
+                    session.flush();
+                    session.clear();
+                }
+            }
+
         } catch (IOException e) {
             e.printStackTrace();
         }
